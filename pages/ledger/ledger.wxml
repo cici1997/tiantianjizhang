@@ -1,0 +1,100 @@
+<view class="container">
+  <!-- 顶部操作栏 -->
+  <view class="header">
+    <button bindtap="showAddDialog" class="add-btn">+</button>
+    <button class="more-btn">···</button>
+  </view>
+
+  <!-- 标题 -->
+  <view class="title-section">
+    <text class="title">资产</text>
+    <view class="avatar">U</view>
+  </view>
+
+  <!-- 统一宽度的卡片容器 -->
+  <view class="card-container">
+    <!-- 净资产卡片 -->
+    <view class="uniform-card">
+      <view class="card-header">
+        <text>净资产</text>
+      </view>
+      <text class="amount">¥{{netAssets.toFixed(2)}}</text>
+      <view class="card-footer">
+        <text>总资产 ¥{{totalAssets.toFixed(2)}}</text>
+        <text>总负债 ¥{{totalLiabilities.toFixed(2)}}</text>
+      </view>
+    </view>
+
+    <!-- 借入借出卡片 -->
+    <view class="loan-cards">
+      <view class="uniform-card">
+        <view class="loan-header">
+          <text>总借入</text>
+        </view>
+        <text class="loan-amount">¥{{totalBorrowed.toFixed(2)}}</text>
+      </view>
+      <view class="uniform-card">
+        <view class="loan-header">
+          <text>总借出</text>
+        </view>
+        <text class="loan-amount">¥{{totalLent.toFixed(2)}}</text>
+      </view>
+    </view>
+
+    <!-- 资金账户 -->
+    <view class="uniform-card account-section">
+      <view class="section-header">
+        <text class="section-title">资金账户</text>
+        <text class="section-count">({{fundAccounts.length}})</text>
+        <text class="section-balance">余额: ¥{{getFundTotal().toFixed(2)}}</text>
+      </view>
+      <block wx:for="{{fundAccounts}}" wx:key="name">
+        <view class="account-item {{index !== fundAccounts.length - 1 ? 'border-bottom' : ''}}">
+          <view class="account-info">
+            <text class="account-name">{{item.name}}</text>
+            <text class="account-type">{{item.type}}</text>
+          </view>
+          <text class="account-balance">¥{{item.balance.toFixed(2)}}</text>
+        </view>
+      </block>
+    </view>
+
+    <!-- 理财账户 -->
+    <view class="uniform-card account-section">
+      <view class="section-header">
+        <text class="section-title">理财账户</text>
+        <text class="section-count">({{investmentAccounts.length}})</text>
+        <text class="section-balance">余额: ¥{{getInvestmentTotal().toFixed(2)}}</text>
+      </view>
+      <block wx:for="{{investmentAccounts}}" wx:key="name">
+        <view class="account-item {{index !== investmentAccounts.length - 1 ? 'border-bottom' : ''}}">
+          <view class="account-info">
+            <text class="account-name">{{item.name}}</text>
+            <text class="account-type">{{item.type}}</text>
+          </view>
+          <text class="account-balance">¥{{item.balance.toFixed(2)}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 添加资产弹窗 -->
+  <modal wx:if="{{showDialog}}" title="添加资产" confirm-text="确定" cancel-text="取消" bindconfirm="confirmAdd" bindcancel="hideDialog">
+    <view class="modal-content">
+      <view class="form-group">
+        <text>账户类型</text>
+        <view class="type-buttons">
+          <button>资金账户</button>
+          <button>理财账户</button>
+          <button>负债账户</button>
+        </view>
+      </view>
+      <view class="form-group">
+        <input placeholder="账户名称"/>
+      </view>
+      <view class="form-group">
+        <input type="number" placeholder="账户余额"/>
+      </view>
+    </view>
+  </modal>
+</view>

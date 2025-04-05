@@ -1,0 +1,163 @@
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="navbar">
+    <view class="navbar-title">统计</view>
+    <view class="navbar-right">
+      <view class="filter-btn">筛选</view>
+      <view class="user-avatar"></view>
+    </view>
+  </view>
+
+  <!-- 主内容区域 -->
+  <view class="content">
+    <!-- 时间筛选 -->
+    <view class="time-filter">
+      <view class="filter-item">周</view>
+      <view class="filter-item active">月</view>
+      <view class="filter-item">年</view>
+      <view class="filter-item">全部</view>
+      <view class="filter-item">范围</view>
+    </view>
+
+    <!-- 日期选择器 -->
+    <view class="date-picker">
+      <view class="arrow-btn" bindtap="prevMonth">左</view>
+      <view class="month-text">2025年3月</view>
+      <view class="arrow-btn" bindtap="nextMonth">右</view>
+    </view>
+
+    <!-- 收支统计卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <view class="card-title">
+          <view class="card-icon"></view>
+          <view class="title-text">收支统计</view>
+        </view>
+        <view class="arrow-icon">></view>
+      </view>
+      <view class="card-grid">
+        <view class="grid-item">
+          <view class="item-header">
+            <view class="item-title">支出</view>
+            <view class="item-arrow">></view>
+          </view>
+          <view class="item-value">¥177.00</view>
+        </view>
+        <view class="grid-item">
+          <view class="item-header">
+            <view class="item-title">收入</view>
+            <view class="item-arrow">></view>
+          </view>
+          <view class="item-value">¥11,392.00</view>
+        </view>
+        <view class="grid-item">
+          <view class="item-header">
+            <view class="item-title">结余</view>
+            <view class="item-arrow">></view>
+          </view>
+          <view class="item-value">¥11,215.00</view>
+        </view>
+        <view class="grid-item">
+          <view class="item-header">
+            <view class="item-title">日均支出</view>
+            <view class="item-arrow">></view>
+          </view>
+          <view class="item-value">¥25.29</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 报销统计卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <view class="card-title">
+          <view class="card-icon"></view>
+          <view class="title-text">报销统计</view>
+        </view>
+        <view class="arrow-icon">></view>
+      </view>
+      <view class="card-grid">
+        <view class="grid-item">
+          <view class="item-header">
+            <view class="item-title">待报销</view>
+            <view class="item-arrow">></view>
+          </view>
+          <view class="item-value">¥0.00</view>
+        </view>
+        <view class="grid-item">
+          <view class="item-header">
+            <view class="item-title">报销入账</view>
+            <view class="item-arrow">></view>
+          </view>
+          <view class="item-value">¥0.00</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 流转统计卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <view class="card-title">
+          <view class="card-icon"></view>
+          <view class="title-text">流转统计</view>
+        </view>
+        <view class="arrow-icon">></view>
+      </view>
+      <view class="card-grid">
+        <view class="grid-item">
+          <view class="item-header">
+            <view class="item-title">还款</view>
+            <view class="item-arrow">></view>
+          </view>
+          <view class="item-value">¥0.00</view>
+        </view>
+        <view class="grid-item">
+          <view class="item-header">
+            <view class="item-title">收款</view>
+            <view class="item-arrow">></view>
+          </view>
+          <view class="item-value">¥0.00</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 支出统计图 -->
+    <view class="card">
+      <view class="card-header">
+        <view class="card-title">
+          <view class="card-icon"></view>
+          <view class="title-text">支出统计图</view>
+        </view>
+        <view class="average-text">平均值: ¥5.71</view>
+      </view>
+      <view class="chart-footer">
+        <view class="date-text">3月31日 ¥57.00</view>
+        <view class="footer-arrow">></view>
+      </view>
+      <!-- 简单的柱状图模拟 -->
+      <view class="simple-chart">
+        <view wx:for="{{chartData}}" wx:key="index" class="chart-bar" style="height: {{item/2}}px; background-color: {{item > 30 ? '#FF6B6B' : '#FFB6B6'}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部导航栏 -->
+  <view class="tab-bar">
+    <view class="tab-item">
+      <view class="tab-icon"></view>
+      <view class="tab-text">账本</view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-icon"></view>
+      <view class="tab-text">资产</view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-icon"></view>
+      <view class="tab-text">存钱</view>
+    </view>
+    <view class="tab-item active">
+      <view class="tab-icon"></view>
+      <view class="tab-text active-text">统计</view>
+    </view>
+  </view>
+</view>

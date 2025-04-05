@@ -1,0 +1,198 @@
+/* 基础样式 */
+.container {
+    padding-bottom: 40px;
+    background-color: #f8f8f8;
+    box-sizing: border-box;
+  }
+  
+  /* 统一卡片样式 */
+  .card-container {
+    padding: 0 15px;
+  }
+  
+  .uniform-card {
+    width: 100%;
+    margin-bottom: 10px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 60px;
+    box-sizing: border-box;
+  }
+  
+  /* 顶部操作栏 */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    background: white;
+  }
+  
+  .add-btn, .more-btn {
+    width: 100px;
+    height: 40px;
+    background-color: #3176FF;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border: none;
+  }
+  
+  /* 标题部分 */
+  .title-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 120px;
+    background: white;
+  }
+  
+  .title {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #3176FF;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  
+  /* 卡片内容样式 */
+  .card-header {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .amount {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    display: block;
+  }
+  
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #999;
+  }
+  
+  /* 借入借出卡片组 */
+  .loan-cards {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .loan-cards .uniform-card {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  
+  .loan-header {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .loan-amount {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  /* 账户部分 */
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .section-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+  
+  .section-count {
+    font-size: 14px;
+    color: #999;
+  }
+  
+  .section-balance {
+    margin-left: auto;
+    font-size: 14px;
+    color: #999;
+  }
+  
+  .account-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+  }
+  
+  .border-bottom {
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .account-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .account-name {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  
+  .account-type {
+    font-size: 12px;
+    color: #999;
+  }
+  
+  .account-balance {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  /* 弹窗样式 */
+  .modal-content {
+    padding: 16px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group text {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  .type-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .type-buttons button {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 8px;
+    background: #f5f5f5;
+    border: none;
+  }
+  
+  .type-buttons button:first-child {
+    background: rgba(49, 118, 255, 0.1);
+    color: #3176FF;
+  }

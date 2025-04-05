@@ -1,0 +1,41 @@
+{
+    "pages": [
+      "pages/index/index",
+      "pages/ledger/ledger",
+      "pages/assets/assets",
+      "pages/stats/stats",
+      "pages/account/account"
+    ],
+    "window": {
+      "navigationBarTitleText": "天天记账",
+      "navigationBarTextStyle": "black",
+      "navigationBarBackgroundColor": "#ffffff",
+      "backgroundColor": "#f8f8f8"
+    },
+    "tabBar": {
+      "list": [
+        {
+          "pagePath": "pages/index/index",
+          "text": "登陆"
+        },
+        {
+          "pagePath": "pages/assets/assets",
+          "text": "账本"
+        },
+        {
+          "pagePath": "pages/ledger/ledger",
+          "text": "资产"
+        },
+        {
+          "pagePath": "pages/stats/stats",
+          "text": "统计"
+        }
+      ],
+      "color": "#999999",
+      "selectedColor": "#0066FF",
+      "backgroundColor": "#ffffff",
+      "borderStyle": "black"
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+  }

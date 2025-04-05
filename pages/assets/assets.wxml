@@ -1,0 +1,123 @@
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar">
+    <view class="navbar-left">
+      <image src="/images/icons/arrow-left.png" class="nav-icon"></image>
+    </view>
+    <view class="navbar-title">记账本</view>
+    <view class="navbar-right">
+      <image src="/images/icons/more.png" class="nav-icon"></image>
+      <image src="/images/icons/user.png" class="nav-icon" style="margin-left: 16px;"></image>
+    </view>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-container">
+    <view class="search-box">
+      <image src="/images/icons/search.png" class="search-icon"></image>
+      <input type="text" placeholder="输入关键词" placeholder-class="placeholder" class="search-input"/>
+    </view>
+  </view>
+
+  <!-- 月份选择 -->
+  <view class="month-selector">
+    <view class="month-info">
+      <text class="month-text">2025年3月</text>
+      <view class="month-arrows">
+        <image src="/images/icons/arrow-left.png" class="arrow-icon"></image>
+        <image src="/images/icons/arrow-right.png" class="arrow-icon"></image>
+      </view>
+    </view>
+    <text class="calendar-link">收支日历</text>
+  </view>
+
+  <!-- 总支出卡片 -->
+  <view class="summary-card">
+    <view class="summary-header">
+      <image src="/images/icons/expense.png" class="summary-icon"></image>
+      <text class="summary-title">总支出</text>
+    </view>
+    <text class="summary-amount">¥177.00</text>
+    <view class="summary-footer">
+      <text class="footer-text">总收入 ¥11,392.00</text>
+      <text class="footer-text">月结余 ¥11,215.00</text>
+    </view>
+  </view>
+
+  <!-- 交易记录列表 -->
+  <scroll-view class="transaction-list" scroll-y>
+    <!-- 3月31日 -->
+    <view class="date-header">
+      <text class="date-text">03/31 星期一</text>
+      <view class="date-summary">
+        <text class="summary-text">支出: ¥57.00</text>
+        <text class="summary-text">收入: ¥1,100.00</text>
+      </view>
+    </view>
+    
+    <view class="transaction-item">
+      <view class="item-left">
+        <view class="item-icon expense-icon">
+          <image src="/images/icons/food.png" class="category-icon"></image>
+        </view>
+        <view class="item-info">
+          <text class="item-category">餐饮</text>
+          <text class="item-time">01:14</text>
+        </view>
+      </view>
+      <text class="item-amount expense-amount">-¥57.00</text>
+    </view>
+    
+    <view class="transaction-item">
+      <view class="item-left">
+        <view class="item-icon income-icon">
+          <image src="/images/icons/part-time.png" class="category-icon"></image>
+        </view>
+        <view class="item-info">
+          <text class="item-category">兼职</text>
+          <text class="item-time">01:14</text>
+        </view>
+      </view>
+      <text class="item-amount income-amount">+¥1,100.00</text>
+    </view>
+    
+    <!-- 3月30日 -->
+    <view class="date-header">
+      <text class="date-text">03/30 星期日</text>
+      <text class="summary-text">收入: ¥1,150.00</text>
+    </view>
+    
+    <view class="transaction-item">
+      <view class="item-left">
+        <view class="item-icon income-icon">
+          <image src="/images/icons/side-job.png" class="category-icon"></image>
+        </view>
+        <view class="item-info">
+          <text class="item-category">副业</text>
+          <text class="item-time">15:15</text>
+        </view>
+      </view>
+      <text class="item-amount income-amount">+¥1,150.00</text>
+    </view>
+  </scroll-view>
+
+
+
+ 
+<!-- 悬浮添加按钮 -->
+<view class="add-button" bindtap="navigateToAccount">
+  <image src="/images/icons/add.jpg" class="add-icon"></image>
+</view>
+  <!-- 添加记账弹窗 -->
+  <view class="dialog-container" wx:if="{{showDialog}}">
+    <view class="dialog-mask" catchtap="hideDialog"></view>
+    <view class="dialog-content">
+      <text class="dialog-title">添加记账</text>
+      <view class="dialog-buttons">
+        <button class="expense-button">支出</button>
+        <button class="income-button">收入</button>
+      </view>
+      <button class="cancel-button" bindtap="hideDialog">取消</button>
+    </view>
+  </view>
+</view>

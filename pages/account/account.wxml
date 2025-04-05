@@ -1,0 +1,86 @@
+<!-- 顶部导航栏 -->
+<view class="fixed top-0 w-full bg-white z-10 border-b border-gray-100 flex items-center justify-between px-4 py-3">
+  <button class="text-gray-500 font-medium">取消</button>
+  <view class="flex bg-gray-100 rounded-full p-0.5">
+    <button class="bg-white text-black px-4 py-1.5 rounded-full font-medium text-sm">支出</button>
+    <button class="text-gray-500 px-4 py-1.5 rounded-full font-medium text-sm">收入</button>
+    <button class="text-gray-500 px-4 py-1.5 rounded-full font-medium text-sm">转账</button>
+  </view>
+  <button class="text-primary font-medium text-sm">默认账本</button>
+</view>
+
+<!-- 内容区域 -->
+<view class="pt-16 pb-32">
+  <!-- 分类网格 -->
+  <view class="grid grid-cols-5 gap-2 p-2 bg-white">
+    <!-- 餐饮 - 高亮显示 -->
+    <view class="flex flex-col items-center space-y-1" bindtap="selectCategory" data-category="餐饮">
+      <view class="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
+        <text class="ri-bowl-line text-white ri-lg"></text>
+      </view>
+      <text class="text-xs">餐饮</text>
+    </view>
+    
+    <!-- 其他分类项... -->
+    <!-- 这里放置其他分类项，结构与餐饮相同 -->
+    <!-- 示例：购物 -->
+    <view class="flex flex-col items-center space-y-1" bindtap="selectCategory" data-category="购物">
+      <view class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
+        <text class="ri-shopping-cart-line text-gray-600 ri-lg"></text>
+      </view>
+      <text class="text-xs">购物</text>
+    </view>
+    <view class="flex flex-col items-center space-y-1" bindtap="selectCategory" data-category="购物">
+      <view class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
+        <text class="ri-shopping-cart-line text-gray-600 ri-lg"></text>
+      </view>
+      <text class="text-xs">购物</text>
+    </view>
+    
+    <!-- 其他23个分类项... -->
+  </view>
+</view>
+
+<!-- 底部工具栏 -->
+<view class="fixed bottom-0 w-full bg-white border-t border-gray-100 flex items-center justify-between px-2 py-2">
+  <view class="flex flex-col items-center space-y-1">
+    <view class="w-6 h-6 flex items-center justify-center">
+      <text class="ri-wallet-3-line text-yellow-400 ri-lg"></text>
+    </view>
+    <text class="text-xs text-gray-600">选择账户</text>
+  </view>
+  
+  <!-- 其他底部按钮... -->
+  <view class="flex flex-col items-center space-y-1">
+    <view class="w-6 h-6 flex items-center justify-center">
+      <text class="ri-file-list-3-line text-gray-600 ri-lg"></text>
+    </view>
+    <text class="text-xs text-gray-600">报销</text>
+  </view>
+  
+  <!-- 其他3个底部按钮... -->
+</view>
+
+<!-- 金额输入区域 -->
+<view class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-4">
+  <view class="flex flex-col">
+    <view class="flex items-center">
+      <text class="text-3xl font-light text-gray-700 mr-2">¥</text>
+      <input 
+        type="digit" 
+        class="text-4xl font-light text-primary border-none outline-none w-full" 
+        placeholder="0.00" 
+        id="amountInput"
+        bindinput="handleAmountInput"
+      />
+    </view>
+    <view class="flex justify-between items-center mt-4">
+      <view class="flex items-center text-gray-400 text-sm">
+        <text class="ri-time-line mr-1"></text>
+        <text>{{currentTime}}</text>
+        <text class="ml-4">点击填写备注</text>
+      </view>
+      <button class="bg-primary text-white px-6 py-2 rounded-full text-base font-medium" bindtap="handleComplete">完成</button>
+    </view>
+  </view>
+</view>
