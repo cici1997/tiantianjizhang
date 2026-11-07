@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>京张智廊 · 五站共构 动效</title>
+<style>
+  html,body{margin:0;height:100%;background:#0b4f72;display:flex;align-items:center;justify-content:center}
+  canvas{max-width:100vw;max-height:100vh;aspect-ratio:16/9}
+</style>
+</head>
+<body>
+<canvas id="c" width="1536" height="864"></canvas>
+<script>
+/* 6 秒循环动效。坐标系与原图 1536x864 一致，底图使用 map.png（与本文件同目录）。
+   文字全部用 Canvas 矢量字体实时绘制，并按 devicePixelRatio 放大画布，保证清晰。 */
+const W = 1536, H = 864, DUR = 6000;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const dpr = Math.max(2, window.devicePixelRatio || 1);
+cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
+const FONT = '"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC",sans-serif';
+
+const map = new Image(); map.src = 'map.png';
+
+// ---------- 数据 ----------
+const stations = [
+  {n:'众智园加速站', x:240,  y:495, t:0.3},
+  {n:'五道口原点站', x:588,  y:600, t:0.9},
+  {n:'知春路空天站', x:873,  y:575, t:1.5},
+  {n:'大钟寺聚能站', x:1064, y:512, t:2.1},
+  {n:'四道口智通站', x:1250, y:454, t:2.7},
+];
+// [学校, x, y, 所属站点索引]
+const unis = [
+  ['AI创新社群',185,360,0],['科技财富广场',244,369,0],['768创意产业园',350,408,0],['AI学社',160,604,0],
+  ['北京林业大学',438,463,1],['中国农业大学',428,342,1],['中国矿业大学',538,440,1],['语言大学',590,470,1],
+  ['清华大学',443,712,1],['北大',540,783,1],['北京科技大学',684,342,1],
+  ['中国地质大学',690,432,2],['北京大学医学部',770,353,2],['北京联合大学',870,370,2],['北京航空航天大学',840,438,2],['中国科学院大学',785,686,2],
+  ['北京电影学院',998,370,3],['中国政法大学',1133,415,3],['中央财经大学',1176,588,3],['人大',990,771,3],['北理工',1172,767,3],
+  ['北京师范大学',1150,273,4],['北京邮电大学',1143,346,4],['北京交通大学',1313,560,4],['北京交通大学(东)',1402,503,4],['北京舞蹈学院',1331,765,4],
+];
+// 智道流光路径：主轴自左向右，纵轴自中心向外
+const paths = [
+  {pts:[[60,430],[240,495],[560,555],[873,562],[1064,512],[1250,454],[1450,415]], w:5, n:70, sp:0.22},
+  {pts:[[150,700],[588,600]], w:4, n:18, sp:0.3},
+  {pts:[[620,560],[620,330]],w:3,n:10,sp:0.35},{pts:[[620,600],[620,770]],w:3,n:10,sp:0.35},
+  {pts:[[900,560],[900,265]],w:3,n:14,sp:0.3},{pts:[[900,580],[900,760]],w:3,n:10,sp:0.35},
+  {pts:[[1213,454],[1213,310]],w:3,n:8,sp:0.35},{pts:[[1213,470],[1213,715]],w:3,n:12,sp:0.35},
+];
+paths.forEach(p=>{ // 预计算长度
+  p.seg=[];p.len=0;
+  for(let i=1;i<p.pts.length;i++){const d=Math.hypot(p.pts[i][0]-p.pts[i-1][0],p.pts[i][1]-p.pts[i-1][1]);p.seg.push(d);p.len+=d;}
+  p.parts=Array.from({length:p.n},(_,i)=>({o:i/p.n+Math.random()*0.02,s:0.8+Math.random()*0.5}));
+});
+function at(p,u){let d=u*p.len;for(let i=0;i<p.seg.length;i++){if(d<=p.seg[i]){const k=d/p.seg[i],a=p.pts[i],b=p.pts[i+1];return[a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k];}d-=p.seg[i];}return p.pts[p.pts.length-1];}
+
+const ease = x => 1-Math.pow(1-Math.min(1,Math.max(0,x)),3);
+
+// ---------- 绘制 ----------
+function background(){
+  ctx.fillStyle='#0b5577'; ctx.fillRect(0,0,W,H);
+  if(map.complete && map.naturalWidth){
+    // 只取地图区域，标题区域由矢量文字重绘
+    ctx.save(); roundRect(48,224,1438,588,18); ctx.clip();
+    ctx.drawImage(map,0,0,map.naturalWidth,map.naturalHeight,0,0,W,H);
+    ctx.fillStyle='rgba(225,250,250,0.18)'; ctx.fillRect(0,0,W,H); // 提亮，极简清爽
+    ctx.restore();
+  }else{
+    ctx.fillStyle='#e8f6f6'; roundRect(48,224,1438,588,18); ctx.fill();
+    ctx.strokeStyle='#9fe3dc'; ctx.lineWidth=2;
+    for(let x=80;x<1480;x+=70){ctx.beginPath();ctx.moveTo(x,224);ctx.lineTo(x,812);ctx.stroke();}
+    for(let y=250;y<812;y+=60){ctx.beginPath();ctx.moveTo(48,y);ctx.lineTo(1486,y);ctx.stroke();}
+  }
+}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+function title(t){
+  const a1=ease((t-0.1)/0.8), a2=ease((t-0.6)/0.8);
+  ctx.textBaseline='middle';
+  ctx.globalAlpha=a1;
+  ctx.font=`700 38px ${FONT}`; ctx.fillStyle='#ffffff'; ctx.fillText('6. 总体设计结构',58,76-(1-a1)*10);
+  ctx.font=`700 36px ${FONT}`; ctx.fillStyle='#5fd6e6'; ctx.fillText('京张智廊三心两点：五站共构AI创新生态圈走廊',372,76-(1-a1)*10);
+  ctx.globalAlpha=a2;
+  ctx.font=`700 42px ${FONT}`; ctx.fillStyle='#ff9e6b'; ctx.textAlign='center';
+  ['智道贯通','碳硅共生','城校联动','五站链群'].forEach((s,i)=>ctx.fillText(s,488+i*195,168+(1-a2)*10));
+  ctx.textAlign='left'; ctx.globalAlpha=1;
+}
+
+function streams(t){
+  const show=ease((t-0.2)/1.0);
+  ctx.save(); ctx.lineCap='round';
+  paths.forEach(p=>{
+    // 底层发光轨道
+    ctx.globalAlpha=0.35*show; ctx.strokeStyle='#ff4fa3'; ctx.lineWidth=p.w*2.4;
+    ctx.shadowColor='#ff3d9a'; ctx.shadowBlur=18;
+    ctx.beginPath(); p.pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])); ctx.stroke();
+    // 粒子
+    ctx.globalAlpha=show; ctx.shadowColor='#fff'; ctx.shadowBlur=12;
+    p.parts.forEach(pt=>{
+      const u=(pt.o+t*p.sp*pt.s)%1;
+      const [x,y]=at(p,u), [x2,y2]=at(p,Math.max(0,u-0.025));
+      const g=ctx.createLinearGradient(x2,y2,x,y);
+      g.addColorStop(0,'rgba(255,90,170,0)'); g.addColorStop(1,'rgba(255,240,250,1)');
+      ctx.strokeStyle=g; ctx.lineWidth=p.w*0.9;
+      ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x,y); ctx.stroke();
+    });
+  });
+  ctx.restore();
+}
+
+function links(t){
+  ctx.save(); ctx.setLineDash([6,6]); ctx.lineDashOffset=-t*40;
+  unis.forEach((u,i)=>{
+    const s=stations[u[3]], local=t-(s.t+0.35+(i%6)*0.12), k=ease(local/0.6);
+    if(k<=0) return;
+    const x=s.x+(u[1]-s.x)*k, y=s.y+(u[2]-s.y)*k;
+    ctx.strokeStyle=`rgba(236,50,150,${0.85*k})`; ctx.lineWidth=1.6;
+    ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(x,y); ctx.stroke();
+    if(k>=1){ // 节点点亮
+      const pulse=0.5+0.5*Math.sin(t*4+i);
+      ctx.setLineDash([]);
+      ctx.fillStyle=`rgba(180,120,230,${0.25+0.2*pulse})`; ctx.beginPath(); ctx.arc(u[1],u[2],14+pulse*4,0,7); ctx.fill();
+      ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(u[1],u[2],8,0,7); ctx.fill();
+      ctx.fillStyle='#a55be0'; ctx.beginPath(); ctx.arc(u[1],u[2],5.5,0,7); ctx.fill();
+      ctx.setLineDash([6,6]);
+    }
+  });
+  ctx.restore();
+}
+
+function station(s,t){
+  const lt=t-s.t; if(lt<0) return;
+  const k=ease(lt/0.5);
+  ctx.save();
+  // 连续波纹扩散
+  for(let i=0;i<3;i++){
+    const ph=((lt*0.7+i/3)%1);
+    ctx.strokeStyle=`rgba(255,60,160,${(1-ph)*0.8*k})`; ctx.lineWidth=3*(1-ph)+1;
+    ctx.beginPath(); ctx.arc(s.x,s.y,40+ph*110,0,7); ctx.stroke();
+  }
+  // 光晕
+  const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,90);
+  g.addColorStop(0,`rgba(255,120,190,${0.55*k})`); g.addColorStop(1,'rgba(255,120,190,0)');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(s.x,s.y,90,0,7); ctx.fill();
+  // 核心圆
+  const r=(30+3*Math.sin(lt*5))*k;
+  ctx.shadowColor='#ff2a8f'; ctx.shadowBlur=25;
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(s.x,s.y,r+6,0,7); ctx.fill();
+  ctx.fillStyle='#e6157e'; ctx.beginPath(); ctx.arc(s.x,s.y,r,0,7); ctx.fill();
+  ctx.shadowBlur=0; ctx.strokeStyle='#fff'; ctx.lineWidth=5;
+  ctx.beginPath(); ctx.moveTo(s.x-r*0.5,s.y); ctx.lineTo(s.x+r*0.5,s.y); ctx.moveTo(s.x,s.y-r*0.5); ctx.lineTo(s.x,s.y+r*0.5); ctx.stroke();
+  // 站名标签（矢量）
+  ctx.globalAlpha=k; ctx.font=`700 22px ${FONT}`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  const ty=s.y-r-36, tw=ctx.measureText(s.n).width+20;
+  ctx.fillStyle='rgba(255,255,255,0.88)'; roundRect(s.x-tw/2,ty-16,tw,32,8); ctx.fill();
+  ctx.fillStyle='#222'; ctx.fillText(s.n,s.x,ty);
+  ctx.restore();
+}
+
+function frame(ms){
+  const t=(ms%DUR)/1000;
+  ctx.clearRect(0,0,W,H);
+  background();
+  ctx.save(); roundRect(48,224,1438,588,18); ctx.clip();
+  streams(t); links(t); stations.forEach(s=>station(s,t));
+  ctx.restore();
+  title(t);
+  // 尾段淡出，实现无缝循环
+  if(t>5.6){ctx.fillStyle=`rgba(11,85,119,${(t-5.6)/0.4})`; ctx.fillRect(0,0,W,H);}
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
